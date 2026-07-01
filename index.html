@@ -1,1 +1,763 @@
-/Users/r2d2/Documents/co-dex-11/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WB-Irene Daily News</title>
+  <style>
+    :root {
+      --bg: #f4efe7;
+      --panel: #fffdf8;
+      --soft: #f8f2e9;
+      --line: #e3d9ca;
+      --ink: #1e2328;
+      --muted: #6d737b;
+      --brand: #bb552d;
+      --brand-dark: #8f3f20;
+      --shadow: 0 18px 48px rgba(61, 49, 31, 0.10);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fff0d8 0, #fff0d8 10%, transparent 35%),
+        linear-gradient(180deg, #f8f3eb 0%, #f1ebe2 100%);
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .hero,
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow,
+    .label {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--brand-dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .intro,
+    .summary,
+    .empty-note,
+    .transcript,
+    .task-item p,
+    .task-item li,
+    .vocab-item p,
+    .meta small {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .intro {
+      margin: 0;
+      max-width: 42ch;
+      font-size: 18px;
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .hero-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lesson-title {
+      margin: 14px 0 8px;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1.1;
+    }
+
+    .summary {
+      margin: 0 0 16px;
+      font-size: 17px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .meta {
+      min-width: 110px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: var(--soft);
+      border: 1px solid #eadfce;
+    }
+
+    .meta small {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .meta strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 20px;
+    }
+
+    .video-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid #d7ccbc;
+      background: #121619;
+      aspect-ratio: 16 / 9;
+    }
+
+    iframe,
+    video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    .watermark-mask {
+      position: absolute;
+      z-index: 3;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      min-width: 120px;
+      min-height: 48px;
+      border-radius: 16px;
+      background: rgba(255, 253, 248, 0.96);
+      color: var(--brand-dark);
+      border: 1px solid rgba(227, 217, 202, 0.95);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.10);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .mask-on .watermark-mask { display: flex; }
+    .top-left { top: 18px; left: 18px; }
+    .top-right { top: 18px; right: 18px; }
+    .bottom-left { bottom: 18px; left: 18px; }
+    .bottom-right { bottom: 18px; right: 18px; }
+
+    .empty-video {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #253037 0%, #171d21 100%);
+      color: #f5ede1;
+    }
+
+    .empty-video h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+
+    .empty-note {
+      margin: 0;
+      font-size: 16px;
+      color: rgba(245, 237, 225, 0.76);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      background: #ecf4f2;
+      color: #215b59;
+    }
+
+    .manage-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .transcript {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px dashed #d9ccb8;
+      background: #fcf7ef;
+      white-space: pre-wrap;
+      display: none;
+      font-size: 15px;
+    }
+
+    .vocab-list,
+    .task-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .vocab-item,
+    .task-item {
+      border: 1px solid #eadfce;
+      background: var(--soft);
+      border-radius: 18px;
+      padding: 15px 16px;
+    }
+
+    .vocab-item strong,
+    .task-item strong {
+      display: block;
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .task-item ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    .teacher-panel {
+      display: none;
+    }
+
+    .teacher-panel.active {
+      display: block;
+    }
+
+    .teacher-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .field {
+      margin-top: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--brand-dark);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d8ccb9;
+      border-radius: 14px;
+      padding: 11px 12px;
+      background: #fffefa;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .teacher-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .teacher-status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .warning {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #fff7eb;
+      border: 1px solid #eed8af;
+      color: #8b5c12;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-bar">
+        <span class="eyebrow">WB_Irene studio</span>
+        <button class="btn manage-btn" id="manageBtn">Teacher Access</button>
+      </div>
+      <h1>Daily English News</h1>
+      <p class="intro">Watch today's video, learn a few key words, and complete the listening tasks.</p>
+    </header>
+
+    <section class="card">
+      <span class="label">Today</span>
+      <h2 class="lesson-title" id="lessonTitle">Students Plant Trees in City Park</h2>
+      <p class="summary" id="lessonSummary">A short news clip for listening practice and speaking follow-up.</p>
+
+      <div class="stats">
+        <div class="meta"><small>Date</small><strong id="lessonDate">2026-07-02</strong></div>
+        <div class="meta"><small>Level</small><strong id="lessonLevel">A1-A2</strong></div>
+        <div class="meta"><small>Length</small><strong id="lessonLength">01:18</strong></div>
+        <div class="meta"><small>Topic</small><strong id="lessonTopic">Environment</strong></div>
+      </div>
+
+      <div class="video-shell" id="videoShell">
+        <div class="watermark-mask bottom-right" id="watermarkMask">WB-Irene</div>
+        <iframe id="videoFrame" allowfullscreen hidden></iframe>
+        <video id="videoPlayer" controls playsinline hidden></video>
+        <div class="empty-video" id="emptyVideo">
+          <div>
+            <h2>Today's video will appear here</h2>
+            <p class="empty-note">Teacher is preparing today's lesson.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions" id="transcriptActions">
+        <button class="btn" id="toggleTranscriptBtn">Show Transcript</button>
+      </div>
+      <div class="transcript" id="transcriptBox"></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Key Words</span>
+      <div class="vocab-list" id="vocabList"></div>
+    </section>
+
+    <section class="card">
+      <span class="label">Practice</span>
+      <div class="task-list" id="taskList"></div>
+    </section>
+
+    <section class="card teacher-panel" id="teacherPanel">
+      <span class="label">Teacher Studio</span>
+      <p class="teacher-note">Students can open this same page, but only a teacher with the password can show the editor.</p>
+
+      <div class="warning">
+        This is a convenience lock for a static HTML page, not a true secure backend. Students will not see input areas unless the password is entered, but this is not enterprise-grade protection.
+      </div>
+
+      <div class="field">
+        <label for="titleInput">Title</label>
+        <input id="titleInput" type="text" />
+      </div>
+
+      <div class="field">
+        <label for="summaryInput">Summary</label>
+        <textarea id="summaryInput"></textarea>
+      </div>
+
+      <div class="mini-grid">
+        <div class="field">
+          <label for="dateInput">Date</label>
+          <input id="dateInput" type="date" />
+        </div>
+        <div class="field">
+          <label for="levelInput">Level</label>
+          <select id="levelInput">
+            <option>A1</option>
+            <option selected>A1-A2</option>
+            <option>A2</option>
+            <option>A2-B1</option>
+            <option>B1</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mini-grid">
+        <div class="field">
+          <label for="lengthInput">Length</label>
+          <input id="lengthInput" type="text" />
+        </div>
+        <div class="field">
+          <label for="topicInput">Topic</label>
+          <input id="topicInput" type="text" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="videoUrlInput">Video URL</label>
+        <input id="videoUrlInput" type="text" placeholder="https://... or embed link" />
+      </div>
+
+      <div class="field">
+        <label for="videoFileInput">Upload File</label>
+        <input id="videoFileInput" type="file" accept="video/*" />
+      </div>
+
+      <div class="field">
+        <label for="maskPositionSelect">Mask</label>
+        <select id="maskPositionSelect">
+          <option value="off">Off</option>
+          <option value="top-left">Top Left</option>
+          <option value="top-right">Top Right</option>
+          <option value="bottom-left">Bottom Left</option>
+          <option value="bottom-right">Bottom Right</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="transcriptInput">Transcript</label>
+        <textarea id="transcriptInput"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="vocabInput">Key Words</label>
+        <textarea id="vocabInput" placeholder="plant | to put a tree in the ground"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="tasksInput">Tasks</label>
+        <textarea id="tasksInput" placeholder="First Listen | What is the news about? | school trip; tree planting; sports game"></textarea>
+      </div>
+
+      <div class="teacher-actions">
+        <button class="btn" id="saveBtn">Save Lesson</button>
+        <button class="btn" id="downloadBtn">Download today.json</button>
+        <button class="btn" id="hideTeacherBtn">Hide Editor</button>
+      </div>
+      <p class="teacher-status" id="teacherStatus">Use a public video URL so students on other devices can watch the video.</p>
+    </section>
+  </div>
+
+  <script>
+    const storageKey = "wb-irene-daily-news";
+    const dataUrl = "./data/today.json";
+    const teacherPassword = "WB_Irene_2026";
+    const defaultLesson = {
+      title: "Students Plant Trees in City Park",
+      summary: "A short news clip for listening practice and speaking follow-up.",
+      date: "2026-07-02",
+      level: "A1-A2",
+      length: "01:18",
+      topic: "Environment",
+      crop: "none",
+      maskPosition: "bottom-right",
+      videoUrl: "",
+      transcript: "",
+      vocab: [
+        { word: "plant", note: "to put a tree in the ground" },
+        { word: "volunteer", note: "a person who helps for free" }
+      ],
+      tasks: [
+        { title: "First Listen", body: "What is the news about?", bullets: ["school trip", "tree planting", "sports game"] }
+      ]
+    };
+
+    const refs = {
+      title: document.getElementById("lessonTitle"),
+      summary: document.getElementById("lessonSummary"),
+      date: document.getElementById("lessonDate"),
+      level: document.getElementById("lessonLevel"),
+      length: document.getElementById("lessonLength"),
+      topic: document.getElementById("lessonTopic"),
+      transcript: document.getElementById("transcriptBox"),
+      toggleTranscriptBtn: document.getElementById("toggleTranscriptBtn"),
+      transcriptActions: document.getElementById("transcriptActions"),
+      manageBtn: document.getElementById("manageBtn"),
+      teacherPanel: document.getElementById("teacherPanel"),
+      teacherStatus: document.getElementById("teacherStatus"),
+      vocabList: document.getElementById("vocabList"),
+      taskList: document.getElementById("taskList"),
+      videoShell: document.getElementById("videoShell"),
+      watermarkMask: document.getElementById("watermarkMask"),
+      videoFrame: document.getElementById("videoFrame"),
+      videoPlayer: document.getElementById("videoPlayer"),
+      emptyVideo: document.getElementById("emptyVideo"),
+      titleInput: document.getElementById("titleInput"),
+      summaryInput: document.getElementById("summaryInput"),
+      dateInput: document.getElementById("dateInput"),
+      levelInput: document.getElementById("levelInput"),
+      lengthInput: document.getElementById("lengthInput"),
+      topicInput: document.getElementById("topicInput"),
+      videoUrlInput: document.getElementById("videoUrlInput"),
+      videoFileInput: document.getElementById("videoFileInput"),
+      maskPositionSelect: document.getElementById("maskPositionSelect"),
+      transcriptInput: document.getElementById("transcriptInput"),
+      vocabInput: document.getElementById("vocabInput"),
+      tasksInput: document.getElementById("tasksInput")
+    };
+
+    let transcriptOpen = false;
+    let currentLesson = structuredClone(defaultLesson);
+    let localVideoUrl = "";
+
+    function isEmbeddableUrl(url) {
+      return /youtube\.com\/embed|player\.vimeo\.com|bilibili\.com\/blackboard|videos?\.|\.mp4($|\?)/i.test(url);
+    }
+
+    function vocabToText(items) {
+      return items.map((item) => `${item.word} | ${item.note}`).join("\n");
+    }
+
+    function tasksToText(items) {
+      return items.map((item) => `${item.title} | ${item.body} | ${(item.bullets || []).join("; ")}`).join("\n");
+    }
+
+    function parseVocab(text) {
+      return text.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+        const [word = "", note = ""] = line.split("|").map((part) => part.trim());
+        return { word: word || "Word", note: note || "Add note." };
+      });
+    }
+
+    function parseTasks(text) {
+      return text.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
+        const [title = "Task", body = "", bullets = ""] = line.split("|").map((part) => part.trim());
+        return {
+          title,
+          body: body || "Add task prompt.",
+          bullets: bullets ? bullets.split(";").map((item) => item.trim()).filter(Boolean) : []
+        };
+      });
+    }
+
+    function fillTeacherForm(lesson) {
+      refs.titleInput.value = lesson.title;
+      refs.summaryInput.value = lesson.summary;
+      refs.dateInput.value = lesson.date;
+      refs.levelInput.value = lesson.level;
+      refs.lengthInput.value = lesson.length;
+      refs.topicInput.value = lesson.topic;
+      refs.videoUrlInput.value = lesson.videoUrl || "";
+      refs.maskPositionSelect.value = lesson.maskPosition || "off";
+      refs.transcriptInput.value = lesson.transcript || "";
+      refs.vocabInput.value = vocabToText(lesson.vocab || []);
+      refs.tasksInput.value = tasksToText(lesson.tasks || []);
+    }
+
+    function readTeacherForm() {
+      return {
+        title: refs.titleInput.value.trim() || defaultLesson.title,
+        summary: refs.summaryInput.value.trim() || defaultLesson.summary,
+        date: refs.dateInput.value || defaultLesson.date,
+        level: refs.levelInput.value || defaultLesson.level,
+        length: refs.lengthInput.value.trim() || defaultLesson.length,
+        topic: refs.topicInput.value.trim() || defaultLesson.topic,
+        maskPosition: refs.maskPositionSelect.value || "off",
+        videoUrl: refs.videoUrlInput.value.trim(),
+        transcript: refs.transcriptInput.value.trim(),
+        vocab: parseVocab(refs.vocabInput.value),
+        tasks: parseTasks(refs.tasksInput.value)
+      };
+    }
+
+    function renderLesson(lesson) {
+      currentLesson = lesson;
+      refs.title.textContent = lesson.title;
+      refs.summary.textContent = lesson.summary;
+      refs.date.textContent = lesson.date;
+      refs.level.textContent = lesson.level;
+      refs.length.textContent = lesson.length;
+      refs.topic.textContent = lesson.topic;
+
+      refs.vocabList.innerHTML = lesson.vocab.map((item) => `
+        <div class="vocab-item">
+          <strong>${item.word}</strong>
+          <p>${item.note}</p>
+        </div>
+      `).join("");
+
+      refs.taskList.innerHTML = lesson.tasks.map((item) => `
+        <div class="task-item">
+          <strong>${item.title}</strong>
+          <p>${item.body}</p>
+          ${item.bullets?.length ? `<ul>${item.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}</ul>` : ""}
+        </div>
+      `).join("");
+
+      refs.transcript.textContent = lesson.transcript || "";
+      const hasTranscript = Boolean((lesson.transcript || "").trim());
+      refs.transcriptActions.style.display = hasTranscript ? "flex" : "none";
+      refs.transcript.style.display = hasTranscript && transcriptOpen ? "block" : "none";
+      refs.toggleTranscriptBtn.textContent = transcriptOpen ? "Hide Transcript" : "Show Transcript";
+
+      refs.videoShell.classList.remove("mask-on");
+      refs.watermarkMask.className = "watermark-mask";
+      if (lesson.maskPosition && lesson.maskPosition !== "off") {
+        refs.videoShell.classList.add("mask-on");
+        refs.watermarkMask.classList.add(lesson.maskPosition);
+      }
+
+      refs.videoFrame.hidden = true;
+      refs.videoPlayer.hidden = true;
+      refs.emptyVideo.hidden = false;
+      refs.videoFrame.removeAttribute("src");
+      refs.videoPlayer.removeAttribute("src");
+
+      const activeVideoUrl = localVideoUrl || lesson.videoUrl || "";
+
+      if (activeVideoUrl) {
+        if (/\.(mp4|webm|ogg)(\?|$)/i.test(activeVideoUrl) || activeVideoUrl.startsWith("blob:")) {
+          refs.videoPlayer.src = activeVideoUrl;
+          refs.videoPlayer.hidden = false;
+          refs.emptyVideo.hidden = true;
+        } else if (isEmbeddableUrl(activeVideoUrl)) {
+          refs.videoFrame.src = activeVideoUrl;
+          refs.videoFrame.hidden = false;
+          refs.emptyVideo.hidden = true;
+        }
+      }
+    }
+
+    function showTeacherPanel() {
+      refs.teacherPanel.classList.add("active");
+      refs.manageBtn.classList.add("hidden");
+      fillTeacherForm(currentLesson);
+    }
+
+    function hideTeacherPanel() {
+      refs.teacherPanel.classList.remove("active");
+      refs.manageBtn.classList.remove("hidden");
+    }
+
+    function saveTeacherLesson() {
+      const lesson = readTeacherForm();
+      currentLesson = lesson;
+      localStorage.setItem(storageKey, JSON.stringify(lesson));
+      renderLesson(lesson);
+      refs.teacherStatus.textContent = localVideoUrl
+        ? "Saved. Local uploaded video is preview-only on this device. For students on other devices, use a public video URL."
+        : "Saved in this browser. Students on this device will see the update now. For other devices, update the online site and use a public video URL.";
+      return lesson;
+    }
+
+    function downloadLessonJson() {
+      const lesson = saveTeacherLesson();
+      const blob = new Blob([JSON.stringify(lesson, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "today.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    document.getElementById("toggleTranscriptBtn").addEventListener("click", () => {
+      transcriptOpen = !transcriptOpen;
+      refs.transcript.style.display = transcriptOpen ? "block" : "none";
+      refs.toggleTranscriptBtn.textContent = transcriptOpen ? "Hide Transcript" : "Show Transcript";
+    });
+
+    refs.manageBtn.addEventListener("click", () => {
+      const password = window.prompt("Enter teacher password");
+      if (password === teacherPassword) {
+        showTeacherPanel();
+      } else if (password !== null) {
+        window.alert("Wrong password.");
+      }
+    });
+
+    document.getElementById("hideTeacherBtn").addEventListener("click", hideTeacherPanel);
+    document.getElementById("saveBtn").addEventListener("click", saveTeacherLesson);
+    document.getElementById("downloadBtn").addEventListener("click", downloadLessonJson);
+    refs.videoFileInput.addEventListener("change", (event) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      if (localVideoUrl) {
+        URL.revokeObjectURL(localVideoUrl);
+      }
+      localVideoUrl = URL.createObjectURL(file);
+      renderLesson(currentLesson);
+      refs.teacherStatus.textContent = "Local video loaded for preview on this device. Students on other devices still need a public video URL.";
+    });
+
+    async function loadLesson() {
+      let lesson = structuredClone(defaultLesson);
+
+      try {
+        const response = await fetch(`${dataUrl}?t=${Date.now()}`, { cache: "no-store" });
+        if (response.ok) {
+          const remoteLesson = await response.json();
+          lesson = { ...lesson, ...remoteLesson };
+        }
+      } catch {}
+
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          lesson = { ...lesson, ...JSON.parse(saved) };
+        } catch {}
+      }
+
+      renderLesson(lesson);
+      fillTeacherForm(lesson);
+    }
+
+    loadLesson();
+  </script>
+</body>
+</html>
