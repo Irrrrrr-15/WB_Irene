@@ -1,1 +1,32 @@
-/Users/r2d2/Documents/co-dex-11/data/today.json
+{
+  "title": "Students Plant Trees in City Park",
+  "summary": "A short news clip for listening practice and speaking follow-up.",
+  "date": "2026-07-02",
+  "level": "A1-A2",
+  "length": "01:18",
+  "topic": "Environment",
+  "maskPosition": "bottom-right",
+  "videoUrl": "",
+  "transcript": "",
+  "vocab": [
+    {
+      "word": "plant",
+      "note": "to put a tree in the ground"
+    },
+    {
+      "word": "volunteer",
+      "note": "a person who helps for free"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "First Listen",
+      "body": "What is the news about?",
+      "bullets": [
+        "school trip",
+        "tree planting",
+        "sports game"
+      ]
+    }
+  ]
+}
